@@ -17,8 +17,9 @@ public class KitchenRepositoryImpl implements KitchenRepository {
 
     @Override
     public List<Kitchen> findAll() {
-        return manager.createQuery("from Kitchen", Kitchen.class)
-                .getResultList();
+//        return manager.createQuery("from Kitchen", Kitchen.class)
+//                .getResultList();
+        return null;
     }
 
     @Override
@@ -35,7 +36,7 @@ public class KitchenRepositoryImpl implements KitchenRepository {
     @Transactional
     @Override
     public void remove(Kitchen kitchen) {
-        kitchen = findAll(kitchen.getId());
+//        kitchen = findAll(kitchen.getId());
         manager.remove(kitchen);
     }
 

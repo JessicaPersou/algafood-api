@@ -4,12 +4,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.util.Objects;
 
-@Entity
 @Data
+@Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Kitchen {
+public class City {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +18,6 @@ public class Kitchen {
     @Column(nullable = false)
     private String name;
 
-
-
-}
+    @ManyToOne
+    @JoinColumn(name = "state_id", nullable = false)
+    private State state;}

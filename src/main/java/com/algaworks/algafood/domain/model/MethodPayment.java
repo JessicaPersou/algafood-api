@@ -4,12 +4,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Kitchen {
+public class MethodPayment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +16,5 @@ public class Kitchen {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
-
-
-
+    private String description;
 }
