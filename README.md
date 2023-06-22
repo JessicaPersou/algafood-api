@@ -8,7 +8,7 @@ Especialista Spring REST
       
 - [x] Introdução ao JPA e Hibernate
       
-- [x] REST com Spring
+- [ ] REST com Spring
       
 - [ ] Super poderes do Spring Data JPA
       
