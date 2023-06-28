@@ -1,4 +1,4 @@
-package com.algaworks.algafood.infrastructure.repository;
+package com.algaworks.algafood.infrastructure_repository;
 
 import com.algaworks.algafood.domain.model.MethodPayment;
 import com.algaworks.algafood.domain.model.MethodPayment;
@@ -19,9 +19,8 @@ public class MethodPaymentRepositoryImpl implements MethodPaymentRepository {
 
     @Override
     public List<MethodPayment> findAll() {
-//        return manager.createQuery("from MethodPayment", MethodPayment.class)
-//                .getResultList();
-        return null;
+        return manager.createQuery("SELECT mp FROM MethodPayment mp", MethodPayment.class)
+                .getResultList();
     }
 
     @Override
@@ -37,8 +36,8 @@ public class MethodPaymentRepositoryImpl implements MethodPaymentRepository {
 
     @Transactional
     @Override
-    public void remove(MethodPayment methodPayment) {
-//        methodPayment = findAll(methodPayment.getId());
+    public void delete(MethodPayment methodPayment) {
+        methodPayment = findById(methodPayment.getId());
         manager.remove(methodPayment);
     }
 

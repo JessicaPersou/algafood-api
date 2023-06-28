@@ -18,6 +18,6 @@ public class RemoveKitchenMain {
         Kitchen kitchen = new Kitchen();
         kitchen.setId(1L);
 
-        kitchenRepository.remove(kitchen);
+        kitchenRepository.delete(kitchen.getId());
     }
 }

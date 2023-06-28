@@ -10,7 +10,7 @@ public interface MethodPaymentRepository {
     List<MethodPayment> findAll();
     MethodPayment findById(Long id);
     MethodPayment save(MethodPayment methodPayment);
-    void remove(MethodPayment methodPayment);
+    void delete(MethodPayment methodPayment);
 
 }
 

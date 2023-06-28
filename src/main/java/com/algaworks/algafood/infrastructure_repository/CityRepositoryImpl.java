@@ -1,4 +1,4 @@
-package com.algaworks.algafood.infrastructure.repository;
+package com.algaworks.algafood.infrastructure_repository;
 
 import com.algaworks.algafood.domain.model.City;
 import com.algaworks.algafood.domain.repository.CityRepository;
@@ -18,9 +18,8 @@ public class CityRepositoryImpl implements CityRepository {
 
     @Override
     public List<City> findAll() {
-//        return manager.createQuery("from City", City.class)
-//                .getResultList();
-        return null;
+        return manager.createQuery("SELECT c FROM City c", City.class)
+                .getResultList();
     }
 
     @Override
@@ -36,8 +35,8 @@ public class CityRepositoryImpl implements CityRepository {
 
     @Transactional
     @Override
-    public void remove(City city) {
-//        city = findAll(city.getId());
+    public void delete(Long id) {
+        City city = findById(id);
         manager.remove(city);
     }
 

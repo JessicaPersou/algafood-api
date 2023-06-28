@@ -1,4 +1,4 @@
-package com.algaworks.algafood.infrastructure.repository;
+package com.algaworks.algafood.infrastructure_repository;
 
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.model.Restaurant;
@@ -19,9 +19,8 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 
     @Override
     public List<Restaurant> findAll() {
-//        return manager.createQuery("from Restaurant", Restaurant.class)
-//                .getResultList();
-        return null;
+        return manager.createQuery("SELECT r FROM Restaurant r", Restaurant.class)
+                .getResultList();
     }
 
     @Override
@@ -37,8 +36,8 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 
     @Transactional
     @Override
-    public void remove(Restaurant restaurant) {
-//        restaurant = findAll(restaurant.getId());
+    public void delete(Long id) {
+        Restaurant restaurant = findById(id);
         manager.remove(restaurant);
     }
 

@@ -19,6 +19,4 @@ public class Kitchen {
     @Column(nullable = false)
     private String name;
 
-
-
 }

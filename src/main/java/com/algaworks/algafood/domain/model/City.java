@@ -20,4 +20,5 @@ public class City {
 
     @ManyToOne
     @JoinColumn(name = "state_id", nullable = false)
-    private State state;}
+    private State state;
+}

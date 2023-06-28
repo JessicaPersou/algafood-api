@@ -1,8 +1,9 @@
-package com.algaworks.algafood.infrastructure.repository;
+package com.algaworks.algafood.infrastructure_repository;
 
 import com.algaworks.algafood.domain.model.State;
 import com.algaworks.algafood.domain.repository.StateRepository;
 import com.algaworks.algafood.domain.repository.StateRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -18,9 +19,8 @@ public class StateRepositoryImpl implements StateRepository {
 
     @Override
     public List<State> findAll() {
-//        return manager.createQuery("from State", State.class)
-//                .getResultList();
-        return null;
+        return manager.createQuery("SELECT s FROM State s", State.class)
+                .getResultList();
     }
 
     @Override
@@ -36,9 +36,14 @@ public class StateRepositoryImpl implements StateRepository {
 
     @Transactional
     @Override
-    public void remove(State state) {
-//        state = findAll(state.getId());
+    public void delete(Long id) {
+        State state = findById(id);
+
+        if(state == null) {
+            throw new EmptyResultDataAccessException(1);
+        }
         manager.remove(state);
+
     }
 
 }

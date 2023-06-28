@@ -9,5 +9,5 @@ public interface PermissionRepository {
     List<Permission> findAll();
     Permission findById(Long id);
     Permission save(Permission permission);
-    void remove(Permission permission);
+    void delete(Permission permission);
 }

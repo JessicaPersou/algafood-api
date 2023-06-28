@@ -1,4 +1,4 @@
-package com.algaworks.algafood.infrastructure.repository;
+package com.algaworks.algafood.infrastructure_repository;
 
 import com.algaworks.algafood.domain.model.Permission;
 import com.algaworks.algafood.domain.repository.PermissionRepository;
@@ -18,9 +18,8 @@ public class PermissionRepositoryImpl implements PermissionRepository {
 
     @Override
     public List<Permission> findAll() {
-//        return manager.createQuery("from Permission", Permission.class)
-//                .getResultList();
-        return null;
+        return manager.createQuery("SELECT p FROM Permission p", Permission.class)
+                .getResultList();
     }
 
     @Override
@@ -36,8 +35,8 @@ public class PermissionRepositoryImpl implements PermissionRepository {
 
     @Transactional
     @Override
-    public void remove(Permission permission) {
-//        permission = findAll(permission.getId());
+    public void delete(Permission permission) {
+        permission = findById(permission.getId());
         manager.remove(permission);
     }
 
