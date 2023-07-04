@@ -15,7 +15,7 @@ public class FindAllKitchenMain {
 
         KitchenRepository kitchenRepository = applicationContext.getBean(KitchenRepository.class);
 
-        Kitchen kitchen = kitchenRepository.findById(1L);
+        Kitchen kitchen = kitchenRepository.findById(1L).orElse(null);
 
         System.out.println(kitchen.getName());
     }

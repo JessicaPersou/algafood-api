@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/kitchens")
@@ -30,10 +31,10 @@ public class KitchenController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Kitchen> KitchenById(@PathVariable Long id){
-        Kitchen kitchen = kitchenService.findById(id);
+        Optional<Kitchen> kitchen = kitchenRepository.findById(id);
 
-        if(kitchen != null){
-            return ResponseEntity.ok(kitchen);
+        if(kitchen.isPresent()){
+            return ResponseEntity.ok(kitchen.get());
         }
         return ResponseEntity.notFound().build();
     }
@@ -46,10 +47,11 @@ public class KitchenController {
     @PutMapping("/{id}")
     public ResponseEntity<Kitchen> updateKitchen(@PathVariable Long id,
                                                  @RequestBody Kitchen kitchen){
-        Kitchen kitchenUpdate = kitchenService.findById(id);
+        Kitchen kitchenUpdate = kitchenRepository.findById(id).orElse(null);
 
         if(kitchenUpdate != null){
             BeanUtils.copyProperties(kitchen, kitchenUpdate, "id");
+
             kitchenService.save(kitchenUpdate);
             return ResponseEntity.ok(kitchenUpdate);
         }

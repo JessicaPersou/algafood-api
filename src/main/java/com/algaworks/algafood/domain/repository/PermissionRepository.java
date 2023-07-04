@@ -1,13 +1,9 @@
 package com.algaworks.algafood.domain.repository;
 
 import com.algaworks.algafood.domain.model.Permission;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-public interface PermissionRepository {
-
-    List<Permission> findAll();
-    Permission findById(Long id);
-    Permission save(Permission permission);
-    void delete(Permission permission);
+@Repository
+public interface PermissionRepository extends JpaRepository<Permission, Long> {
 }

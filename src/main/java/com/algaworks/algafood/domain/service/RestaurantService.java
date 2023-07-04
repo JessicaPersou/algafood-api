@@ -22,23 +22,12 @@ public class RestaurantService {
     @Autowired
     private KitchenRepository kitchenRepository;
 
-    public List<Restaurant> findAll(){
-        return  restaurantRepository.findAll();
-    }
-
-    public Restaurant findById(Long id){
-        return restaurantRepository.findById(id);
-    }
 
     public Restaurant save(Restaurant restaurant){
         Long kitchenId = restaurant.getKitchen().getId();
-        Kitchen kitchen = kitchenRepository.findById(kitchenId);
-
-        if(kitchen == null){
-            throw new EntityNotFound(
-                    String.format("Cozinha com o id %d não cadastrada.", kitchenId)
-            );
-        }
+        Kitchen kitchen = kitchenRepository.findById(kitchenId)
+                .orElseThrow(() -> new EntityNotFound(
+                        String.format("Não existe cadastro de cozinha com código %d",kitchenId)));
 
         restaurant.setKitchen(kitchen);
         return restaurantRepository.save(restaurant);
@@ -46,7 +35,7 @@ public class RestaurantService {
 
     public void delete(Long id){
         try {
-            restaurantRepository.delete(id);
+            restaurantRepository.deleteById(id);
         }catch(EmptyResultDataAccessException e){
             throw new EntityNotFound(
                     String.format("Restaurante com código %d não foi encontrado.", id));

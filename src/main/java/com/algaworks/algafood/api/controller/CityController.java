@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cities")
@@ -30,30 +31,44 @@ public class CityController {
 
     @GetMapping("/{id}")
     public ResponseEntity<City> CityById(@PathVariable Long id){
-        City city = cityRepository.findById(id);
+        Optional<City> city = cityRepository.findById(id);
 
-        if(city != null){
-            return ResponseEntity.ok(city);
+        if(city.isPresent()){
+            return ResponseEntity.ok(city.get());
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public City newCity(@RequestBody City city){
-        return cityService.save(city);
+    public ResponseEntity<?> newCity(@RequestBody City city){
+        try{
+            city = cityService.save(city);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(city);
+        }catch (EntityNotFound e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<City> updateCity(@PathVariable Long id,
+    public ResponseEntity<?> updateCity(@PathVariable Long id,
                                            @RequestBody City city){
-        City cityUpdate = cityService.findById(id);
 
-            if(cityUpdate != null){
-            BeanUtils.copyProperties(city, cityUpdate, "id");
-            cityService.save(cityUpdate);
-            return ResponseEntity.ok(cityUpdate);
-        }
-        return ResponseEntity.notFound().build();
+        City cityUpdate = cityRepository.findById(id).orElse(null);
+
+        try{
+            if(cityUpdate != null) {
+                BeanUtils.copyProperties(city, cityUpdate, "id");
+
+                cityService.save(cityUpdate);
+                return ResponseEntity.ok(cityUpdate);
+            }
+            return ResponseEntity.notFound().build();
+
+        }catch(EntityNotFound e){
+                return ResponseEntity.badRequest()
+                        .body(e.getMessage());
+            }
     }
 
     @DeleteMapping("/{id}")

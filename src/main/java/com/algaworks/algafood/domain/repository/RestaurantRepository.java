@@ -2,13 +2,11 @@ package com.algaworks.algafood.domain.repository;
 
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.model.Restaurant;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface RestaurantRepository {
-
-    List<Restaurant> findAll();
-    Restaurant findById(Long id);
-    Restaurant save(Restaurant restaurant);
-    void delete(Long id);
+@Repository
+public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 }

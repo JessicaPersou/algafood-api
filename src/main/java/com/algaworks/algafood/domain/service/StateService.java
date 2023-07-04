@@ -9,21 +9,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service // responsável pelas regras de negócio do Objeto State
 public class StateService {
 
     @Autowired
     private StateRepository stateRepository;
-
-    public List<State> findAll(){
-        return stateRepository.findAll();
-    }
-
-    public State findById(Long id){
-        return stateRepository.findById(id);
-    }
 
     public State save(State state){
         return stateRepository.save(state);
@@ -31,7 +21,7 @@ public class StateService {
 
     public void delete(Long id){
         try {
-            stateRepository.delete(id);
+            stateRepository.deleteById(id);
         }catch(EmptyResultDataAccessException e){
             throw new EntityNotFound(
                     String.format("Estado com código %d não foi encontrado.", id));

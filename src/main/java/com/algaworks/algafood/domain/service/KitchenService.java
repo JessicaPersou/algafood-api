@@ -9,21 +9,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class KitchenService {
 
     @Autowired
     private KitchenRepository kitchenRepository;
-
-    public List<Kitchen> findAll(){
-        return kitchenRepository.findAll();
-    }
-
-    public Kitchen findById(Long id){
-        return kitchenRepository.findById(id);
-    }
 
     public Kitchen save(Kitchen kitchen){
         return kitchenRepository.save(kitchen);
@@ -31,7 +21,7 @@ public class KitchenService {
 
     public void delete(Long id){
         try {
-            kitchenRepository.delete(id);
+            kitchenRepository.deleteById(id);
         }catch(EmptyResultDataAccessException e){
             throw new EntityNotFound(
                     String.format("Cozinha com código %d não foi encontrado.", id));

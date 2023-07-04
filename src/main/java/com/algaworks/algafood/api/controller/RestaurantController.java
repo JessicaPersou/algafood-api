@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/restaurants")
@@ -30,14 +31,14 @@ public class RestaurantController {
 
     @GetMapping
     public List<Restaurant> AllRestaurants(){
-        return restaurantService.findAll();
+        return restaurantRepository.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Restaurant> RestaurantById(@PathVariable Long id){
-        Restaurant restaurant = restaurantService.findById(id);
-        if(restaurant != null){
-            return ResponseEntity.ok(restaurant);
+        Optional<Restaurant> restaurant = restaurantRepository.findById(id);
+        if(restaurant.isPresent()){
+            return ResponseEntity.ok(restaurant.get());
         }
         return ResponseEntity.notFound().build();
     }
@@ -58,11 +59,12 @@ public class RestaurantController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRestaurant(@PathVariable Long id,
                                               @RequestBody Restaurant restaurant) {
-        Restaurant restaurantUpdate = restaurantRepository.findById(id);
+        Restaurant restaurantUpdate = restaurantRepository.findById(id).orElse(null);
 
         try{
             if (restaurantUpdate != null) {
                 BeanUtils.copyProperties(restaurant, restaurantUpdate, "id");
+
                 restaurantService.save(restaurantUpdate);
                 return ResponseEntity.ok(restaurantUpdate);
             }
@@ -77,7 +79,7 @@ public class RestaurantController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> updatePartialRestaurant(@PathVariable Long id, @RequestBody Map<String, Object> fields){
-            Restaurant RestaurantActual = restaurantRepository.findById(id);
+            Restaurant RestaurantActual = restaurantRepository.findById(id).orElse(null);
 
             if (RestaurantActual == null) {
                 return ResponseEntity.notFound().build();

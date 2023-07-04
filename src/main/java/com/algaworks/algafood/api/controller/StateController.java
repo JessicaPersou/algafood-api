@@ -24,12 +24,12 @@ public class StateController {
 
     @GetMapping
     public List<State> AllStates(){
-        return stateService.findAll();
+        return stateRepository.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<State> StateById(@PathVariable Long id){
-        State state = stateService.findById(id);
+        State state = stateRepository.findById(id).orElse(null);
 
         if(state != null){
             return ResponseEntity.ok(state);
@@ -38,21 +38,33 @@ public class StateController {
     }
 
     @PostMapping
-    public State newState(@RequestBody State state){
-        return stateService.save(state);
+    public ResponseEntity<?> newState(@RequestBody State state){
+        try{
+            state = stateService.save(state);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(state);
+        }catch (EntityNotFound e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<State> updateState(@PathVariable Long id,
+    public ResponseEntity<?> updateState(@PathVariable Long id,
                                              @RequestBody State state){
-        State stateUpdate = stateRepository.findById(id);
+        State stateUpdate = stateRepository.findById(id).orElse(null);
 
-        if(stateUpdate != null){
-            BeanUtils.copyProperties(state,stateUpdate, "id");
-            stateService.save(stateUpdate);
-            return ResponseEntity.ok(stateUpdate);
+        try{
+            if(stateUpdate != null){
+                BeanUtils.copyProperties(state,stateUpdate, "id");
+
+                stateService.save(stateUpdate);
+                return ResponseEntity.ok(stateUpdate);
+            }
+                return ResponseEntity.notFound().build();
+        }catch(EntityNotFound e){
+                return ResponseEntity.badRequest()
+                            .body(e.getMessage());
         }
-        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
@@ -61,11 +73,11 @@ public class StateController {
             stateService.delete(id);
             return ResponseEntity.noContent().build();
 
-        }catch (EntityNotFound ex){
+        }catch (EntityNotFound e){
             return ResponseEntity.notFound().build();
 
-        }catch (EntityInUse ex){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+        }catch (EntityInUse e){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 }
